@@ -1,6 +1,9 @@
-# Kudos to DOROWU for his amazing VNC 18.04 LXDE image
+# DOROWU image VNC 18.04 LXDE
 FROM dorowu/ubuntu-desktop-lxde-vnc:bionic
-LABEL maintainer "fabrizio.bottarel@iit.it"
+
+LABEL rosversion=melodic ubuntu=18.04 \
+        mainteiner=karol.orlamowski@gmail.com \
+        ubuntuversion=bionic
 
 # Fix dirmngr
 RUN sudo apt purge dirmngr -y && sudo apt update && sudo apt install dirmngr -y
@@ -11,7 +14,9 @@ RUN sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF
 
 # Installing ROS
 RUN sudo apt-get update && sudo apt-get install -y ros-melodic-desktop-full \
-		wget git nano
+		wget git nano python python-pip && \
+        sudo pip install -U rosdep terminator
+
 RUN rosdep init && rosdep update
 
 RUN /bin/bash -c "echo 'export HOME=/home/ubuntu' >> /root/.bashrc && source /root/.bashrc"
@@ -29,7 +34,7 @@ RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && \
 RUN sudo apt install -y python-rosinstall python-rosinstall-generator python-wstool build-essential
 
 # Updating ROSDEP and installing dependencies
-#RUN cd ~/ros_ws && rosdep update && rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
+RUN cd ~/ros_ws && rosdep update && rosdep install --from-paths src --ignore-src --rosdistro=melodic -y
 
 # Sourcing
 RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && \
