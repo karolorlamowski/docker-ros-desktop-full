@@ -14,8 +14,8 @@ RUN sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF
 
 # Installing ROS
 RUN sudo apt-get update && sudo apt-get install -y ros-melodic-desktop-full \
-		wget git nano python python-pip && \
-        sudo pip install -U rosdep terminator
+		wget git nano python python-pip terminator && \
+        sudo pip install -U rosdep
 
 RUN rosdep init && rosdep update
 
